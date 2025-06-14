@@ -32,6 +32,11 @@ app.post('/upload', upload.single('video'), (req, res) => {
   res.json({ videoUrl });
 });
 
+app.get("/", (req, res) => {
+  res.send("🚀 Backend is Live!");
+});
+
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
