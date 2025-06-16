@@ -3,7 +3,8 @@
 
 const express = require('express');
 const multer = require('multer');
-const validateLinkRoute = require("./routes/link.js");
+const validateLinkRoute = require("./routes/link");
+app.use(validateLinkRoute);
 
 const path = require('path');
 const cors = require('cors');
@@ -15,7 +16,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(validateLinkRoute);
 
 // Serve uploaded videos publicly
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
