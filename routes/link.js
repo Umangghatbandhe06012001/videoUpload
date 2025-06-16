@@ -1,9 +1,10 @@
-import express from "express";
-import fetch from "node-fetch"; // Install if not already: npm i node-fetch
+// routes/link.js
+const express = require('express');
+const fetch = require('node-fetch');
 const router = express.Router();
 
 router.post("/api/validate-link", async (req, res) => {
-  console.log("ImInside this api!!!!!!!!!!!");
+  console.log("I'm Inside this API!!!!!!!!!!!");
   const { url } = req.body;
 
   if (!url || typeof url !== "string") {
@@ -12,15 +13,11 @@ router.post("/api/validate-link", async (req, res) => {
 
   try {
     const response = await fetch(url, { method: "HEAD", timeout: 3000 });
-
-    if (response.ok) {
-      return res.status(200).json({ valid: true });
-    } else {
-      return res.status(200).json({ valid: false });
-    }
+    return res.status(200).json({ valid: response.ok });
   } catch (err) {
     return res.status(200).json({ valid: false });
   }
 });
 
-export default router;
+module.exports = router;
+
