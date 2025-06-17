@@ -96,6 +96,8 @@ app.post('/upload', upload.single('video'), (req, res) => {
     return res.status(400).json({ error: 'Video upload failed' });
   }
 
+  console.log("Hello this is it ===================>", req.file.path);
+
   res.json({ videoUrl: req.file.path });
 });
 
