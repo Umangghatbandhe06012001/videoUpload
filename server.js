@@ -60,13 +60,16 @@
 //   console.log(`Server running on port ==> ${PORT}`);
 // });
 
+require('dotenv').config();
+
+
 const express = require('express');
+
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('./config/cloudinary');
 const validateLinkRoute = require('./routes/link');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 
@@ -109,6 +112,12 @@ app.get("/", (req, res) => {
 // Server start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
+  console.log("Cloudinary ENV:", {
+  name: process.env.CLOUD_NAME,
+  key: process.env.CLOUD_API_KEY,
+  secret: process.env.CLOUD_API_SECRET
+});
+
   console.log(`Server running on port ==> ${PORT}`);
 });
 
