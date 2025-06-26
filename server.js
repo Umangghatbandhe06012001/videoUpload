@@ -65,11 +65,22 @@ require('dotenv').config();
 
 const express = require('express');
 
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
+
+
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('./config/cloudinary');
 const validateLinkRoute = require('./routes/link');
 const cors = require('cors');
+
+
+
+const savedPostRoutes = require('./routes/savedPost');
 
 const app = express();
 
@@ -92,6 +103,9 @@ const storage = new CloudinaryStorage({
 });
 
 const upload = multer({ storage });
+
+// saved Post for user
+app.use('/api/saved-posts', savedPostRoutes);
 
 // ✅ Upload Route (returns permanent Cloudinary link)
 app.post('/upload', upload.single('video'), (req, res) => {
