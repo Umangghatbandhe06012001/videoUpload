@@ -88,6 +88,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// upvote And DownVote Post Routes
+
+const voteRoutes = require('./routes/voteRoutes');
+app.use('/api/votes', voteRoutes);
+
+
 // Custom routes
 app.use(validateLinkRoute);
 
