@@ -29,3 +29,33 @@ exports.getUpvotedPosts = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+
+const DownvotedPost = require('../models/DownvotedPost');
+
+
+exports.getDownvotedPosts = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const records = await DownvotedPost.find({ userId });
+    const postIds = records.map(r => r.postId);
+
+    const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/post', {
+      headers: {
+        'projectID': process.env.PROJECT_ID
+      }
+    });
+
+    const result = await response.json();
+    const allPosts = result.data;
+
+    const filteredPosts = allPosts.filter(post => postIds.includes(post._id));
+
+    res.json(filteredPosts);
+  } catch (err) {
+    console.error('Failed to get downvoted posts:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};

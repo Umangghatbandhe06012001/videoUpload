@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const UpvotedPost = require('../models/UpvotedPost');
 const DownvotedPost = require('../models/DownvotedPost');
-const { getUpvotedPosts } = require('../controllers/voteController');
-
+const { getUpvotedPosts, getDownvotedPosts } = require('../controllers/voteController');
 router.get('/upvoted/:userId', getUpvotedPosts);
+router.get('/downvoted/:userId', getDownvotedPosts);
 
 // Toggle Upvote
 router.post('/upvote', async (req, res) => {
