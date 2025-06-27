@@ -94,6 +94,11 @@ const voteRoutes = require('./routes/voteRoutes');
 app.use('/api/votes', voteRoutes);
 
 
+// Hide Posts
+const hiddenPostRoutes = require('./routes/hiddenPost');
+app.use('/api/hidden-posts', hiddenPostRoutes);
+
+
 // Custom routes
 app.use(validateLinkRoute);
 
