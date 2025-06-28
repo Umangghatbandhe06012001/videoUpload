@@ -25,51 +25,51 @@ router.post('/hide', async (req, res) => {
 });
 
 // ✅ Get hidden posts
-// router.get('/:userId', async (req, res) => {
-//   try {
-//     const record = await HiddenPost.findOne({ userId: req.params.userId });
-
-//     res.json({ hiddenPosts: record?.hiddenPosts || [] });
-//   } catch (err) {
-//     console.error('Error fetching hidden posts:', err);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
-
-
 router.get('/:userId', async (req, res) => {
   try {
     const record = await HiddenPost.findOne({ userId: req.params.userId });
-    const hiddenPostIds = record?.hiddenPosts || [];
-
-    if (hiddenPostIds.length === 0) {
-      return res.json({ hiddenPosts: [] });
-    }
-
-    // Fetch all posts from external API
-    const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post`, {
-      headers: {
-        projectID:process.env.PROJECT_ID,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch posts from external API');
-    }
-
-    const postData = await response.json();
-
-    // Filter only hidden posts using the IDs
-    const hiddenPosts = postData.data.filter(post =>
-      hiddenPostIds.includes(post._id)
-    );
-
-    res.json({ hiddenPosts });
+    console.log("Debugging the hiddenPosts:", record?.hiddenPosts);
+    res.json({ hiddenPosts: record?.hiddenPosts || [] });
   } catch (err) {
     console.error('Error fetching hidden posts:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+
+// router.get('/:userId', async (req, res) => {
+//   try {
+//     const record = await HiddenPost.findOne({ userId: req.params.userId });
+//     const hiddenPostIds = record?.hiddenPosts || [];
+
+//     if (hiddenPostIds.length === 0) {
+//       return res.json({ hiddenPosts: [] });
+//     }
+
+//     // Fetch all posts from external API
+//     const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post`, {
+//       headers: {
+//         projectID:process.env.PROJECT_ID,
+//       },
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to fetch posts from external API');
+//     }
+
+//     const postData = await response.json();
+
+//     // Filter only hidden posts using the IDs
+//     const hiddenPosts = postData.data.filter(post =>
+//       hiddenPostIds.includes(post._id)
+//     );
+
+//     res.json({ hiddenPosts });
+//   } catch (err) {
+//     console.error('Error fetching hidden posts:', err);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
 
 // ✅ Unhide a post
 router.post('/unhide', async (req, res) => {
