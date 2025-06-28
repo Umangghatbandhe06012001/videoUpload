@@ -3,6 +3,8 @@ const router = express.Router();
 const HiddenPost = require('../models/HiddenPost');
 const fetch = require('node-fetch');
 
+
+console.log("✅ hiddenPost route file loaded");
 // ✅ Hide a post
 router.post('/hide', async (req, res) => {
   const { userId, postId } = req.body;
@@ -17,7 +19,13 @@ router.post('/hide', async (req, res) => {
     }
 
     await record.save();
-    res.json({ success: true, message: 'Post hidden successfully' });
+    console.log("✅ Sending response to frontend:", {
+    success: true,
+    message: 'Post hidden successfully',
+    data: record
+  });
+
+    res.json({ success: true, message: 'Post hidden successfully' ,data: record});
   } catch (err) {
     console.error('Error hiding post:', err);
     res.status(500).json({ error: 'Server error' });
@@ -25,10 +33,11 @@ router.post('/hide', async (req, res) => {
 });
 
 // ✅ Get hidden posts
-router.get('/:userId', async (req, res) => {
+router.get('/user/:userId', async (req, res) => {
+  // console.log("Debugging the hiddenPosts:");
   try {
     const record = await HiddenPost.findOne({ userId: req.params.userId });
-    console.log("Debugging the hiddenPosts:", record?.hiddenPosts);
+    // console.log("Debugging the hiddenPosts:", record?.hiddenPosts);
     res.json({ hiddenPosts: record?.hiddenPosts || [] });
   } catch (err) {
     console.error('Error fetching hidden posts:', err);
